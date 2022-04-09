@@ -11,6 +11,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		ErrorLogger::Log(hr, "Failed to call CoInitialize.");
 		return -1;
 	}
+
 	Engine engine;
 	if (engine.Initialize(hInstance, "Title", "MyWindowClass", 800, 600));
 	{

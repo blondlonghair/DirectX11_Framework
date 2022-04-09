@@ -7,14 +7,15 @@
 #include <WICTextureLoader.h>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "ConstantBuffer.h"
 
 class Graphics
 {
 public:
-	bool Initialize(HWND hWnd, int width, int height);
+	bool Initialize(HWND hwnd, int width, int height);
 	void RenderFrame();
 private:
-	bool InitializeDirectX(HWND hWnd, int width, int height);
+	bool InitializeDirectX(HWND hWnd);
 	bool InitializeShaders();
 	bool InitializeScene();
 
@@ -25,6 +26,7 @@ private:
 
 	VertexShader vertexshader;
 	PixelShader pixelshader;
+	ConstantBuffer<CB_VS_vertexshader> constantBuffer;
 
 	VertexBuffer<Vertex> vertexBuffer;
 	IndexBuffer indicesBuffer;
@@ -40,4 +42,7 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerState;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> myTexture;
+
+	int windowWidth = 0;
+	int windowHeight = 0;
 };
