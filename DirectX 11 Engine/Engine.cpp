@@ -2,6 +2,8 @@
 
 bool Engine::Initialize(HINSTANCE hInstance, std::string window_title, std::string window_class, int width, int height)
 {
+	timer.Start();
+
 	if (!this->render_window.Initialize(this, hInstance, window_title, window_class, width, height))
 		return false;
 
@@ -18,6 +20,9 @@ bool Engine::ProcessMessages()
 
 void Engine::Update()
 {
+	float dt = timer.GetMilisecondsElapsed();
+	timer.Restart();
+
 	while (!keyboard.charBufferIsEmpty())
 	{
 		unsigned char ch = keyboard.ReadChar();
@@ -41,31 +46,31 @@ void Engine::Update()
 		}
 	}
 
-	const float cameraSpeed = 0.02f;
+	const float cameraSpeed = 0.005f;
 
 	if (keyboard.KeyisPressed('W'))
 	{
-		this->gfx.camera.AdjustPosition(this->gfx.camera.GetForwardVector() * cameraSpeed);
+		this->gfx.camera.AdjustPosition(this->gfx.camera.GetForwardVector() * cameraSpeed * dt);
 	}
 	if (keyboard.KeyisPressed('S'))
 	{
-		this->gfx.camera.AdjustPosition(this->gfx.camera.GetBackwardVector() * cameraSpeed);
+		this->gfx.camera.AdjustPosition(this->gfx.camera.GetBackwardVector() * cameraSpeed * dt);
 	}
 	if (keyboard.KeyisPressed('A'))
 	{
-		this->gfx.camera.AdjustPosition(this->gfx.camera.GetLeftVector() * cameraSpeed);
+		this->gfx.camera.AdjustPosition(this->gfx.camera.GetLeftVector() * cameraSpeed * dt);
 	}
 	if (keyboard.KeyisPressed('D'))
 	{
-		this->gfx.camera.AdjustPosition(this->gfx.camera.GetRightVector() * cameraSpeed);
+		this->gfx.camera.AdjustPosition(this->gfx.camera.GetRightVector() * cameraSpeed * dt);
 	}
 	if (keyboard.KeyisPressed(VK_SPACE))
 	{
-		this->gfx.camera.AdjustPosition(0.0f, cameraSpeed, 0.0f);
+		this->gfx.camera.AdjustPosition(0.0f, cameraSpeed * dt, 0.0f);
 	}
 	if (keyboard.KeyisPressed('Z'))
 	{
-		this->gfx.camera.AdjustPosition(0.0f, -cameraSpeed, 0.0f);
+		this->gfx.camera.AdjustPosition(0.0f, -cameraSpeed * dt, 0.0f);
 	}
 }
 
