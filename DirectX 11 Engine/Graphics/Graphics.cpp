@@ -27,6 +27,23 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 void Graphics::RenderFrame()
 {
+	//textured Square
+	Vertex v[] =
+	{
+		Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f),
+		Vertex(-0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+		Vertex(0.5f, 0.5f, 0.0f, 1.0f, 0.0f),
+		Vertex(0.5f, -0.5f, 0.0f, 1.0f, 1.0f),
+	};
+
+	//Load Vertex Data
+	HRESULT hr = this->vertexBuffer.Initialize(this->device.Get(), v, ARRAYSIZE(v));
+	if (FAILED(hr))
+	{
+		ErrorLogger::Log(hr, "Failed to create vertex buffer");
+	}
+
+
 	float bgcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	this->deviceContext->ClearRenderTargetView(this->renderTargetView.Get(), bgcolor);
 	this->deviceContext->ClearDepthStencilView(this->depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
