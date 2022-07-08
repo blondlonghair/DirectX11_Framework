@@ -64,11 +64,11 @@ void Engine::Update()
 	{
 		this->gfx.camera.AdjustPosition(this->gfx.camera.GetRightVector() * cameraSpeed * dt);
 	}
-	if (keyboard.KeyisPressed(VK_SPACE))
+	if (keyboard.KeyisPressed('E'))
 	{
 		this->gfx.camera.AdjustPosition(0.0f, cameraSpeed * dt, 0.0f);
 	}
-	if (keyboard.KeyisPressed('Z'))
+	if (keyboard.KeyisPressed('Q'))
 	{
 		this->gfx.camera.AdjustPosition(0.0f, -cameraSpeed * dt, 0.0f);
 	}
