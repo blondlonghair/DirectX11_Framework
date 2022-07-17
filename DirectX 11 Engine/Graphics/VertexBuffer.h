@@ -22,7 +22,7 @@ public:
 		return buffer.Get();
 	}
 
-	ID3D11Buffer* const* GetAddresOf() const
+	ID3D11Buffer* const* GetAddressOf() const
 	{
 		return buffer.GetAddressOf();
 	}
