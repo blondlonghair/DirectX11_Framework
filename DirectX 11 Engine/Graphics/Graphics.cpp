@@ -28,7 +28,6 @@ bool Graphics::Initialize(HWND hwnd, int width, int height)
 
 void Graphics::RenderFrame()
 {
-
 	float bgcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	this->deviceContext->ClearRenderTargetView(this->renderTargetView.Get(), bgcolor);
 	this->deviceContext->ClearDepthStencilView(this->depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -37,42 +36,14 @@ void Graphics::RenderFrame()
 	this->deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	this->deviceContext->RSSetState(this->rasterizerState.Get());
 	this->deviceContext->OMSetDepthStencilState(this->depthStencilState.Get(), 0);
-	this->deviceContext->OMSetBlendState(this->blendState.Get(), NULL, 0xFFFFFFFF);
+	this->deviceContext->OMSetBlendState(NULL, NULL, 0xFFFFFFFF);
 	this->deviceContext->PSSetSamplers(0, 1, this->samplerState.GetAddressOf());
 	this->deviceContext->VSSetShader(vertexshader.GetShader(), NULL, 0);
 	this->deviceContext->PSSetShader(pixelshader.GetShader(), NULL, 0);
 
-	UINT offset = 0;
-
-	static float alpha = 0.5f;
-	{ //Pavement Cube Texture
-		//Update Constant Buffer
-		static float translationOffset[3] = { 0, 0, -1.0f };
-		XMMATRIX world = XMMatrixTranslation(translationOffset[0], translationOffset[1], translationOffset[2]);
-		cb_vs_vertexshader.data.mat = world * camera.GetViewMatrix() * camera.GetProjectionMatrix();
-		cb_vs_vertexshader.data.mat = DirectX::XMMatrixTranspose(cb_vs_vertexshader.data.mat);
-
-		if (!cb_vs_vertexshader.ApplyChanges())
-			return;
-		this->deviceContext->VSSetConstantBuffers(0, 1, this->cb_vs_vertexshader.GetAddressOf());
-
-		this->cb_ps_pixelshader.data.alpha = alpha;
-		this->cb_ps_pixelshader.ApplyChanges();
-		this->deviceContext->PSSetConstantBuffers(0, 1, this->cb_ps_pixelshader.GetAddressOf());
-
-		//Square
-		this->deviceContext->PSSetShaderResources(0, 1, this->pavementTexture.GetAddressOf());
-		this->deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), vertexBuffer.StridePtr(), &offset);
-		this->deviceContext->IASetIndexBuffer(indicesBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		this->deviceContext->RSSetState(this->rasterizerState_CullFront.Get());
-		this->deviceContext->DrawIndexed(indicesBuffer.BufferSize(), 0, 0);
-		this->deviceContext->RSSetState(this->rasterizerState.Get());
-		this->deviceContext->DrawIndexed(indicesBuffer.BufferSize(), 0, 0);
+	{
+		this->model.Draw(camera.GetViewMatrix() * camera.GetProjectionMatrix());
 	}
-
-
-
-
 
 	//Draw Text
 	static int fpsCounter = 0;
@@ -95,7 +66,6 @@ void Graphics::RenderFrame()
 	ImGui::NewFrame();
 	//Create ImGui Test Window
 	ImGui::Begin("Test");
-	ImGui::DragFloat("Alpha", &alpha, 0.1f, 0.0f, 1.0f);
 	ImGui::End();
 	//Assemble Together Draw Data
 	ImGui::Render();
@@ -117,7 +87,7 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 			return false;
 		}
 
-		DXGI_SWAP_CHAIN_DESC scd = {0};
+		DXGI_SWAP_CHAIN_DESC scd = { 0 };
 
 		scd.BufferDesc.Width = this->windowWidth;
 		scd.BufferDesc.Height = this->windowHeight;
@@ -151,14 +121,14 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 			NULL, //Supported feature level
 			this->deviceContext.GetAddressOf()); //Device Context Address
 
-		COM_ERROR_IF_FAILED(hr, "Failed to create device and swapchain");
+		COM_ERROR_IF_FAILED(hr, "Failed to create device and swapchain.");
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
 		hr = this->swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(backBuffer.GetAddressOf()));
-		COM_ERROR_IF_FAILED(hr, "GetBuffer Failed");
+		COM_ERROR_IF_FAILED(hr, "GetBuffer Failed.");
 
 		hr = this->device->CreateRenderTargetView(backBuffer.Get(), NULL, this->renderTargetView.GetAddressOf());
-		COM_ERROR_IF_FAILED(hr, "Failed to create render target view");
+		COM_ERROR_IF_FAILED(hr, "Failed to create render target view.");
 
 		//Describe our Depth/Stencil Buffer
 		CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, this->windowWidth, this->windowHeight);
@@ -180,8 +150,8 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 		hr = this->device->CreateDepthStencilState(&depthstencildesc, this->depthStencilState.GetAddressOf());
 		COM_ERROR_IF_FAILED(hr, "Failed to create depth stencil state.");
 
-		//Create & Set the Viewport
-		CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(this->windowWidth), static_cast<float>(this->windowHeight));
+		//Create & set the Viewport
+		CD3D11_VIEWPORT viewport(0.0f, 0.0f, static_cast<float>(this->windowWidth), static_cast<float>(this->windowHeight));;
 		this->deviceContext->RSSetViewports(1, &viewport);
 
 		//Create Rasterizer State
@@ -196,10 +166,7 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 		COM_ERROR_IF_FAILED(hr, "Failed to create rasterizer state.");
 
 		//Create Blend State
-		D3D11_BLEND_DESC blendDesc = {0};
-
-		D3D11_RENDER_TARGET_BLEND_DESC rtbd = {0};
-
+		D3D11_RENDER_TARGET_BLEND_DESC rtbd = { 0 };
 		rtbd.BlendEnable = true;
 		rtbd.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
 		rtbd.DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
@@ -209,6 +176,7 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 		rtbd.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
 		rtbd.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE::D3D11_COLOR_WRITE_ENABLE_ALL;
 
+		D3D11_BLEND_DESC blendDesc = { 0 };
 		blendDesc.RenderTarget[0] = rtbd;
 
 		hr = this->device->CreateBlendState(&blendDesc, this->blendState.GetAddressOf());
@@ -235,6 +203,7 @@ bool Graphics::InitializeDirectX(HWND hwnd)
 
 bool Graphics::InitializeShaders()
 {
+
 	std::wstring shaderfolder = L"";
 #pragma region DetermineShaderPath
 	if (IsDebuggerPresent() == TRUE)
@@ -268,6 +237,7 @@ bool Graphics::InitializeShaders()
 	if (!pixelshader.Initialize(this->device, shaderfolder + L"pixelshader.cso"))
 		return false;
 
+
 	return true;
 }
 
@@ -275,52 +245,15 @@ bool Graphics::InitializeScene()
 {
 	try
 	{
-		//Textured Square
-		Vertex v[] =
-		{
-			Vertex(-0.5f,  -0.5f, -0.5f, 0.0f, 1.0f), //FRONT Bottom Left   - [0]
-			Vertex(-0.5f,   0.5f, -0.5f, 0.0f, 0.0f), //FRONT Top Left      - [1]
-			Vertex(0.5f,   0.5f, -0.5f, 1.0f, 0.0f), //FRONT Top Right     - [2]
-			Vertex(0.5f,  -0.5f, -0.5f, 1.0f, 1.0f), //FRONT Bottom Right   - [3]
-			Vertex(-0.5f,  -0.5f, 0.5f, 0.0f, 1.0f), //BACK Bottom Left   - [4]
-			Vertex(-0.5f,   0.5f, 0.5f, 0.0f, 0.0f), //BACK Top Left      - [5]
-			Vertex(0.5f,   0.5f, 0.5f, 1.0f, 0.0f), //BACK Top Right     - [6]
-			Vertex(0.5f,  -0.5f, 0.5f, 1.0f, 1.0f), //BACK Bottom Right   - [7]
-		};
-
-		//Load Vertex Data
-		HRESULT hr = this->vertexBuffer.Initialize(this->device.Get(), v, ARRAYSIZE(v));
-		COM_ERROR_IF_FAILED(hr, "Failed to initialize vertex buffer.");
-
-		DWORD indices[] =
-		{
-			0, 1, 2, //FRONT
-			0, 2, 3, //FRONT
-			4, 7, 6, //BACK 
-			4, 6, 5, //BACK
-			3, 2, 6, //RIGHT SIDE
-			3, 6, 7, //RIGHT SIDE
-			4, 5, 1, //LEFT SIDE
-			4, 1, 0, //LEFT SIDE
-			1, 5, 6, //TOP
-			1, 6, 2, //TOP
-			0, 3, 7, //BOTTOM
-			0, 7, 4, //BOTTOM
-		};
-
-		//Load Index Data
-		hr = this->indicesBuffer.Initialize(this->device.Get(), indices, ARRAYSIZE(indices));
-		COM_ERROR_IF_FAILED(hr, "Failed to initialize index buffer.");
-
 		//Load Texture
-		hr = DirectX::CreateWICTextureFromFile(this->device.Get(), L"Data\\Textures\\seamless_grass.jpg", nullptr, grassTexture.GetAddressOf());
-		COM_ERROR_IF_FAILED(hr, "Failed to create wic texture form file.");
+		HRESULT hr = DirectX::CreateWICTextureFromFile(this->device.Get(), L"Data\\Textures\\seamless_grass.jpg", nullptr, grassTexture.GetAddressOf());
+		COM_ERROR_IF_FAILED(hr, "Failed to create wic texture from file.");
 
 		hr = DirectX::CreateWICTextureFromFile(this->device.Get(), L"Data\\Textures\\pinksquare.jpg", nullptr, pinkTexture.GetAddressOf());
-		COM_ERROR_IF_FAILED(hr, "Failed to create wic texture form file.");
+		COM_ERROR_IF_FAILED(hr, "Failed to create wic texture from file.");
 
 		hr = DirectX::CreateWICTextureFromFile(this->device.Get(), L"Data\\Textures\\seamless_pavement.jpg", nullptr, pavementTexture.GetAddressOf());
-		COM_ERROR_IF_FAILED(hr, "Failed to create wic texture form file.");
+		COM_ERROR_IF_FAILED(hr, "Failed to create wic texture from file.");
 
 		//Initialize Constant Buffer(s)
 		hr = this->cb_vs_vertexshader.Initialize(this->device.Get(), this->deviceContext.Get());
@@ -328,6 +261,9 @@ bool Graphics::InitializeScene()
 
 		hr = this->cb_ps_pixelshader.Initialize(this->device.Get(), this->deviceContext.Get());
 		COM_ERROR_IF_FAILED(hr, "Failed to initialize constant buffer.");
+
+		if (!model.Initialize(this->device.Get(), this->deviceContext.Get(), this->pavementTexture.Get(), this->cb_vs_vertexshader))
+			return false;
 
 		camera.SetPosition(0.0f, 0.0f, -2.0f);
 		camera.SetProjectionValues(90.0f, static_cast<float>(windowWidth) / static_cast<float>(windowHeight), 0.1f, 1000.0f);
