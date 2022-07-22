@@ -7,6 +7,8 @@
 #include <wrl/client.h>
 #include <vector>
 
+
+
 class AdapterData
 {
 public:

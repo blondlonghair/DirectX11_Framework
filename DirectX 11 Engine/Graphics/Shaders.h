@@ -5,6 +5,8 @@
 #include <wrl/client.h>
 #include <d3dcompiler.h>
 
+
+
 class VertexShader
 {
 public:
