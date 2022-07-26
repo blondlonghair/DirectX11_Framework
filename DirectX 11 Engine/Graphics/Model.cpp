@@ -96,5 +96,8 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 			indices.push_back(face.mIndices[j]);
 	}
 
-	return Mesh(this->device, this->deviceContext, vertices, indices);
+	std::vector<Texture> textures;
+	textures.push_back(Texture(this->device, Colors::UnloadedTextureColor, aiTextureType::aiTextureType_DIFFUSE));
+
+	return Mesh(this->device, this->deviceContext, vertices, indices, textures);
 }
