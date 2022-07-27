@@ -14,7 +14,7 @@ private:
 	bool LoadModel(const std::string& filePath);
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-
+	std::vector<Texture> LoadMaterialTexture(aiMaterial* pMaterial, aiTextureType textureType, const aiScene* pScene);
 	ID3D11Device* device = nullptr;
 	ID3D11DeviceContext* deviceContext = nullptr;
 	ConstantBuffer<CB_VS_vertexshader>* cb_vs_vertexshader = nullptr;
