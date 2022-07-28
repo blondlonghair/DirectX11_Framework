@@ -100,13 +100,13 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 
 	std::vector<Texture> textures;
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-	std::vector<Texture> diffuseTextures = LoadMaterialTexture(material, aiTextureType::aiTextureType_DIFFUSE, scene);
+	std::vector<Texture> diffuseTextures = LoadMaterialTextures(material, aiTextureType::aiTextureType_DIFFUSE, scene);
 	textures.insert(textures.end(), diffuseTextures.begin(), diffuseTextures.end());
 
 	return Mesh(this->device, this->deviceContext, vertices, indices, textures);
 }
 
-TextureStorageType Model::DetermineTextureStorageType(const aiScene* pScene, aiMaterial* pMat, unsigned index, aiTextureType textureType)
+TextureStorageType Model::DetermineTextureStorageType(const aiScene* pScene, aiMaterial* pMat, unsigned int index, aiTextureType textureType)
 {
 	if (pMat->GetTextureCount(textureType) == 0)
 		return TextureStorageType::None;
@@ -114,20 +114,20 @@ TextureStorageType Model::DetermineTextureStorageType(const aiScene* pScene, aiM
 	aiString path;
 	pMat->GetTexture(textureType, index, &path);
 	std::string texturePath = path.C_Str();
-
+	//Check if texture is an embedded indexed texture by seeing if the file path is an index #
 	if (texturePath[0] == '*')
 	{
 		if (pScene->mTextures[0]->mHeight == 0)
 		{
-			return TextureStorageType::EmbeddedCompressed;
+			return TextureStorageType::EmbeddedIndexCompressed;
 		}
 		else
 		{
-			assert("SUPPORT DOSE NOT EXIST YET FOR INDEXED NON COMPRESSED TEXTURES!" && 0);
+			assert("SUPPORT DOES NOT EXIST YET FOR INDEXED NON COMPRESSED TEXTURES!" && 0);
 			return TextureStorageType::EmbeddedIndexNonCompressed;
 		}
 	}
-
+	//Check if texture is an embedded texture but not indexed (path will be the texture's name instead of #)
 	if (auto pTex = pScene->GetEmbeddedTexture(texturePath.c_str()))
 	{
 		if (pTex->mHeight == 0)
@@ -140,22 +140,22 @@ TextureStorageType Model::DetermineTextureStorageType(const aiScene* pScene, aiM
 			return TextureStorageType::EmbeddedNonCompressed;
 		}
 	}
-
+	//Lastly check if texture is a filepath by checking for period before extension name
 	if (texturePath.find('.') != std::string::npos)
 	{
 		return TextureStorageType::Disk;
 	}
 
-	return TextureStorageType::None;
+	return TextureStorageType::None; // No texture exists
 }
 
-std::vector<Texture> Model::LoadMaterialTexture(aiMaterial* pMaterial, aiTextureType textureType, const aiScene* pScene)
+std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* pMaterial, aiTextureType textureType, const aiScene* pScene)
 {
 	std::vector<Texture> materialTextures;
 	TextureStorageType storetype = TextureStorageType::Invalid;
 	unsigned int textureCount = pMaterial->GetTextureCount(textureType);
 
-	if (textureCount == 0)
+	if (textureCount == 0) //If there are no textures
 	{
 		storetype = TextureStorageType::None;
 		aiColor3D aiColor(0.0f, 0.0f, 0.0f);
@@ -163,7 +163,7 @@ std::vector<Texture> Model::LoadMaterialTexture(aiMaterial* pMaterial, aiTexture
 		{
 		case aiTextureType_DIFFUSE:
 			pMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, aiColor);
-			if (aiColor.IsBlack())
+			if (aiColor.IsBlack()) //If color = black, just use grey
 			{
 				materialTextures.push_back(Texture(this->device, Colors::UnloadedTextureColor, textureType));
 				return materialTextures;
@@ -181,12 +181,22 @@ std::vector<Texture> Model::LoadMaterialTexture(aiMaterial* pMaterial, aiTexture
 			TextureStorageType storetype = DetermineTextureStorageType(pScene, pMaterial, i, textureType);
 			switch (storetype)
 			{
+			case TextureStorageType::EmbeddedCompressed:
+			{
+				const aiTexture* pTexture = pScene->GetEmbeddedTexture(path.C_Str());
+				Texture embeddedTexture(this->device,
+					reinterpret_cast<uint8_t*>(pTexture->pcData),
+					pTexture->mWidth,
+					textureType);
+				materialTextures.push_back(embeddedTexture);
+				break;
+			}
 			case TextureStorageType::Disk:
 			{
 				std::string filename = this->directory + '\\' + path.C_Str();
 				Texture diskTexture(this->device, filename, textureType);
 				materialTextures.push_back(diskTexture);
-				break;;
+				break;
 			}
 			}
 		}
@@ -197,4 +207,5 @@ std::vector<Texture> Model::LoadMaterialTexture(aiMaterial* pMaterial, aiTexture
 		materialTextures.push_back(Texture(this->device, Colors::UnhandledTextureColor, aiTextureType::aiTextureType_DIFFUSE));
 	}
 	return materialTextures;
+
 }
