@@ -11,7 +11,7 @@ std::string StringHelper::GetDirectoryFromPath(const std::string& filepath)
 {
 	size_t off1 = filepath.find_last_of('\\');
 	size_t off2 = filepath.find_last_of('/');
-	if (off1 == std::string::npos && off2 == std::string::npos)
+	if (off1 == std::string::npos && off2 == std::string::npos) //If no slash or backslash in path?
 	{
 		return "";
 	}
@@ -23,7 +23,7 @@ std::string StringHelper::GetDirectoryFromPath(const std::string& filepath)
 	{
 		return filepath.substr(0, off1);
 	}
-
+	//If both exists, need to use the greater offset
 	return filepath.substr(0, std::max(off1, off2));
 }
 
@@ -34,6 +34,5 @@ std::string StringHelper::GetFileExtension(const std::string& filename)
 	{
 		return {};
 	}
-
 	return std::string(filename.substr(off + 1));
 }
