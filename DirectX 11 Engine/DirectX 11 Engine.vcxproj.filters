@@ -84,24 +84,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui.cpp">
-      <Filter>Source Files\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp">
-      <Filter>Source Files\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_impl_dx11.cpp">
-      <Filter>Source Files\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp">
-      <Filter>Source Files\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_tables.cpp">
-      <Filter>Source Files\Graphics\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
-      <Filter>Source Files\Graphics\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="COMException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -119,6 +101,24 @@
     </ClCompile>
     <ClCompile Include="Graphics\Texture.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui.cpp">
+      <Filter>Source Files\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_demo.cpp">
+      <Filter>Source Files\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_draw.cpp">
+      <Filter>Source Files\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_impl_dx11.cpp">
+      <Filter>Source Files\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_impl_win32.cpp">
+      <Filter>Source Files\Graphics\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ImGui\imgui_widgets.cpp">
+      <Filter>Source Files\Graphics\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +179,24 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="COMException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Mesh.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Color.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Texture.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="Graphics\ImGui\imconfig.h">
       <Filter>Header Files\Graphics\ImGui</Filter>
     </ClInclude>
@@ -202,24 +220,6 @@
     </ClInclude>
     <ClInclude Include="Graphics\ImGui\imstb_truetype.h">
       <Filter>Header Files\Graphics\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="COMException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Model.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Mesh.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Color.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Texture.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
