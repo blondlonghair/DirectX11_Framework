@@ -232,6 +232,7 @@ bool Graphics::InitializeShaders()
 	{
 		{"POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0  },
 		{"TEXCOORD", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0  },
+		{"NORMAL", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0  },
 	};
 
 	UINT numElements = ARRAYSIZE(layout);
@@ -267,7 +268,7 @@ bool Graphics::InitializeScene()
 		hr = this->cb_ps_light.Initialize(this->device.Get(), this->deviceContext.Get());
 		COM_ERROR_IF_FAILED(hr, "Failed to initialize constant buffer.");
 
-		this->cb_ps_light.data.ambientLightColor = XMFLOAT3(0.0f, 1.0f, 1.0f);
+		this->cb_ps_light.data.ambientLightColor = XMFLOAT3(1.0f, 1.0f, 1.0f);
 		this->cb_ps_light.data.ambientLightStrength = 1.0f;
 
 		if (!gameObject.Initialize("Data\\Objects\\nanosuit\\nanosuit.obj", this->device.Get(), this->deviceContext.Get(), this->cb_vs_vertexshader))
