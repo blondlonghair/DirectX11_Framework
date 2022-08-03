@@ -46,7 +46,7 @@ void Engine::Update()
 		}
 	}
 
-	//this->gfx.gameObject.AdjustRotation(0.0f, 0.001f * dt, 0.0f);
+	this->gfx.gameObject.AdjustRotation(0.0f, 0.001f * dt, 0.0f);
 
 	float cameraSpeed = 0.005f;
 
@@ -78,6 +78,14 @@ void Engine::Update()
 	if (keyboard.KeyisPressed('Q'))
 	{
 		this->gfx.camera.AdjustPosition(0.0f, -cameraSpeed * dt, 0.0f);
+	}
+
+	if (keyboard.KeyisPressed('C'))
+	{
+		XMVECTOR lightPosition = this->gfx.camera.GetPositionVector();
+		lightPosition += this->gfx.camera.GetForwardVector();
+		this->gfx.light.SetPosition(lightPosition);
+		this->gfx.light.SetRotation(this->gfx.camera.GetRotationFloat3());
 	}
 }
 
