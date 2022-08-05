@@ -96,6 +96,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,6 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,6 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,10 +155,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics\Camera2D.cpp" />
+    <ClCompile Include="Graphics\GameObject2D.cpp" />
+    <ClCompile Include="Graphics\GameObject3D.cpp" />
     <ClCompile Include="Graphics\Color.cpp" />
     <ClCompile Include="COMException.cpp" />
     <ClCompile Include="Graphics\GameObject.cpp" />
-    <ClCompile Include="Graphics\Camera.cpp" />
+    <ClCompile Include="Graphics\Camera3D.cpp" />
     <ClCompile Include="Graphics\AdapterReader.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
@@ -182,10 +189,13 @@
     <ClCompile Include="WindowContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Graphics\Camera2D.h" />
+    <ClInclude Include="Graphics\GameObject2D.h" />
+    <ClInclude Include="Graphics\GameObject3D.h" />
     <ClInclude Include="Graphics\Color.h" />
     <ClInclude Include="COMException.h" />
     <ClInclude Include="Graphics\GameObject.h" />
-    <ClInclude Include="Graphics\Camera.h" />
+    <ClInclude Include="Graphics\Camera3D.h" />
     <ClInclude Include="Graphics\ConstantBuffer.h" />
     <ClInclude Include="Graphics\ConstantBufferTypes.h" />
     <ClInclude Include="Graphics\AdapterReader.h" />

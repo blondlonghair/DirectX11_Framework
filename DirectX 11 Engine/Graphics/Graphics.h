@@ -4,7 +4,7 @@
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
 #include <WICTextureLoader.h>
-#include "Camera.h"
+#include "Camera3D.h"
 #include "..\\Timer.h"
 #include "ImGui\\imgui.h"
 #include "ImGui\\imgui_impl_win32.h"
@@ -17,7 +17,7 @@ class Graphics
 public:
 	bool Initialize(HWND hwnd, int width, int height);
 	void RenderFrame();
-	Camera camera;
+	Camera3D camera;
 	RenderableGameObject gameObject;
 	Light light;
 

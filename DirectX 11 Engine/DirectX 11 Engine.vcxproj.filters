@@ -78,7 +78,7 @@
     <ClCompile Include="Graphics\Shaders.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\Camera.cpp">
+    <ClCompile Include="Graphics\Camera3D.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
@@ -124,6 +124,15 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Light.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GameObject2D.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GameObject3D.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Camera2D.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,7 +188,7 @@
     <ClInclude Include="Graphics\ConstantBuffer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Camera.h">
+    <ClInclude Include="Graphics\Camera3D.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
@@ -231,6 +240,15 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Light.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GameObject2D.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GameObject3D.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Camera2D.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

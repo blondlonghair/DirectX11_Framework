@@ -13,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	Engine engine;
-	if (engine.Initialize(hInstance, "Title", "MyWindowClass", 1600, 900));
+	if (engine.Initialize(hInstance, "Title", "MyWindowClass", 900, 600));
 	{
 		while (engine.ProcessMessages() == true)
 		{
