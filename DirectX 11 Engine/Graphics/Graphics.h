@@ -11,13 +11,17 @@
 #include "ImGui\\imgui_impl_dx11.h"
 #include "RenderableGameObject.h"
 #include "Light.h"
+#include "Camera2D.h"
+#include "Sprite.h"
 
 class Graphics
 {
 public:
 	bool Initialize(HWND hwnd, int width, int height);
 	void RenderFrame();
-	Camera3D camera;
+	Camera3D camera3D;
+	Camera2D camera2D;
+	Sprite sprite;
 	RenderableGameObject gameObject;
 	Light light;
 
@@ -31,9 +35,12 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain> swapchain;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTargetView;
 
+	VertexShader vertexshader_2d;
 	VertexShader vertexshader;
+	PixelShader pixelshader_2d;
 	PixelShader pixelshader;
 	PixelShader pixelshader_nolight;
+	ConstantBuffer<CB_VS_vertexshader_2d> cb_vs_vertexshader_2d;
 	ConstantBuffer<CB_VS_vertexshader> cb_vs_vertexshader;
 	ConstantBuffer<CB_PS_light> cb_ps_light;
 
