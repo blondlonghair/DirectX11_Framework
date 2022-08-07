@@ -48,36 +48,42 @@ void Engine::Update()
 
 	this->gfx.gameObject.AdjustRotation(0.0f, 0.001f * dt, 0.0f);
 
-	float Camera3D3D3D3D3D3D3D3D3DSpeed = 0.005f;
+	gfx.sprite.AdjustPosition(0.03f * dt, 0.0f, 0.0f);
+	if (gfx.sprite.GetPositionFloat3().x > 160.f)
+	{
+		gfx.sprite.SetPosition(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	}
+
+	float Camera3DSpeed = 0.005f;
 
 	if (keyboard.KeyisPressed(VK_SHIFT))
 	{
-		Camera3D3D3D3D3D3D3D3D3DSpeed = 0.3f;
+		Camera3DSpeed = 0.3f;
 	}
 
 	if (keyboard.KeyisPressed('W'))
 	{
-		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetForwardVector() * Camera3D3D3D3D3D3D3D3D3DSpeed * dt);
+		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetForwardVector() * Camera3DSpeed * dt);
 	}
 	if (keyboard.KeyisPressed('S'))
 	{
-		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetBackwardVector() * Camera3D3D3D3D3D3D3D3D3DSpeed * dt);
+		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetBackwardVector() * Camera3DSpeed * dt);
 	}
 	if (keyboard.KeyisPressed('A'))
 	{
-		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetLeftVector() * Camera3D3D3D3D3D3D3D3D3DSpeed * dt);
+		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetLeftVector() * Camera3DSpeed * dt);
 	}
 	if (keyboard.KeyisPressed('D'))
 	{
-		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetRightVector() * Camera3D3D3D3D3D3D3D3D3DSpeed * dt);
+		this->gfx.camera3D.AdjustPosition(this->gfx.camera3D.GetRightVector() * Camera3DSpeed * dt);
 	}
 	if (keyboard.KeyisPressed('E'))
 	{
-		this->gfx.camera3D.AdjustPosition(0.0f, Camera3D3D3D3D3D3D3D3D3DSpeed * dt, 0.0f);
+		this->gfx.camera3D.AdjustPosition(0.0f, Camera3DSpeed * dt, 0.0f);
 	}
 	if (keyboard.KeyisPressed('Q'))
 	{
-		this->gfx.camera3D.AdjustPosition(0.0f, -Camera3D3D3D3D3D3D3D3D3DSpeed * dt, 0.0f);
+		this->gfx.camera3D.AdjustPosition(0.0f, -Camera3DSpeed * dt, 0.0f);
 	}
 
 	if (keyboard.KeyisPressed('C'))
